@@ -32,8 +32,10 @@ while running:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_p:
                 mixer.music.pause()
+                print("Music was paused")
             elif event.key == pygame.K_r:
                 mixer.music.unpause()
+                print("music is playing")
             elif event.key == pygame.K_e:
                 mixer.music.stop()
                 running = False
