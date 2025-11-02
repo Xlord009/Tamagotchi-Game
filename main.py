@@ -37,6 +37,8 @@ while running:
             elif event.key == pygame.K_e:
                 mixer.music.stop()
                 running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+             print("Mouse button was pressed")
 
 pygame.quit()
 
