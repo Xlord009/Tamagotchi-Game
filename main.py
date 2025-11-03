@@ -17,10 +17,12 @@ mixer.music.play()
 
 playlist = [
      "Music/Sorry About That.mp3",
-     "Music/Never see me again Kanye West.mp3",
-     "Music/HEIL HITLER YE.mp3"
+     "Music/Never see me again Kanye West.mp3"
 ]
 
+current = 0
+mixer.music.load(playlist[current])
+mixer.music.play()
 
 def next_song():
     global current
@@ -29,9 +31,7 @@ def next_song():
     mixer.music.play()
     print("Playing:", playlist[current])
 
-current = 0
-mixer.music.load(playlist[current])
-mixer.music.play()
+
 
 font = pygame.font.Font(None, 36)
 
