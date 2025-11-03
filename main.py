@@ -53,6 +53,6 @@ class Tama:
                 self.emotions = 100
                 self.health = 100
                 self.alive = True
-                self.days = 1
+                
 
 
