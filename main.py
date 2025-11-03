@@ -16,8 +16,8 @@ mixer.music.set_volume(1)
 mixer.music.play()
 
 playlist = [
-     "Music/Sorry About That.mp3"
-     "Music/Never see me again Kanye West.mp3"
+     "Music/Sorry About That.mp3",
+     "Music/Never see me again Kanye West.mp3",
      "Music/HEIL HITLER YE.mp3"
 ]
 
@@ -47,18 +47,15 @@ while running:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_p:
                 mixer.music.pause()
-                
-                print("Music was paused")
             elif event.key == pygame.K_r:
                 mixer.music.unpause()
-                print("music is playing")
             elif event.key == pygame.K_e:
                 mixer.music.stop()
                 running = False
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-             print("Mouse button was pressed")
-        elif event.key == pygame.K_t:
-            next_song()
+            elif event.key == pygame.K_t:
+                next_song()
+
+
 
 pygame.quit()
 
