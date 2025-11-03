@@ -15,7 +15,10 @@ mixer.music.load("Sorry About That.mp3")
 mixer.music.set_volume(1)
 mixer.music.play()
 
-
+playlist = [
+     ""
+     ""
+]
 
 
 font = pygame.font.Font(None, 36)
