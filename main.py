@@ -11,8 +11,8 @@ pygame.display.set_caption("Tamagotchi")
 
 #Music
 mixer.init()
-mixer.music.load("Sorry About That.mp3")
 mixer.music.set_volume(1)
+mixer.music.load("Music/Sorry About That.mp3")
 mixer.music.play()
 
 playlist = [
@@ -47,13 +47,18 @@ while running:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_p:
                 mixer.music.pause()
+                print("Music was paused")
             elif event.key == pygame.K_r:
                 mixer.music.unpause()
+                print("Music is playing")
             elif event.key == pygame.K_e:
                 mixer.music.stop()
                 running = False
-            elif event.key == pygame.K_t:
+            elif event.key == pygame.K_s:
                 next_song()
+                print("skipping song")
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            print("Mouse was pressed")
 
 
 
