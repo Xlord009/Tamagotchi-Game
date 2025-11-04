@@ -52,3 +52,20 @@ MERGE CONFLICT HANDLING
 # then
 git add file_name
 git commit -m "resolved merge conflict"
+
+
+# how to fix git processing malfunction
+step 1:
+        
+        ps aux | grep git
+
+step 2:
+        
+        rm -f .git/index.lock
+
+step 3:
+
+        git add .
+        git commit -m "Your message"
+        git push
+
