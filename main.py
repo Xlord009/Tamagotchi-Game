@@ -56,7 +56,7 @@ class Button:
      
      def draw(self):
           button_text = font.render(self.text, True, "black")
-          button_rect = pygame.Rect((self.x_pos, self.y_pos), (150, 25))
+          button_rect = pygame.Rect((self.x_pos, self.y_pos), (80, 25))
           if self.enabled:
                 if self.check_click():
                     pygame.draw.rect(screen, 'dark grey', button_rect, 0, 15)
@@ -83,9 +83,9 @@ while running:
     screen.fill("pink")
     timer.tick(fps)
 
-    my_button = Button("Pause", 10, 10, button_enabled)
-    my_button2 = Button("Play", 10, 40, button_enabled2)
-    my_button3 = Button("Skip", 10, 70, button_enabled3)
+    my_button = Button("Pause", 150, 650, button_enabled)
+    my_button2 = Button("Play", 300, 650, button_enabled2)
+    my_button3 = Button("Skip", 450, 650, button_enabled3)
 
     if pygame.mouse.get_pressed()[0] and new_press:
          new_press = False
