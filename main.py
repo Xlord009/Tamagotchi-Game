@@ -14,7 +14,7 @@ timer = pygame.time.Clock()
 
 #Music
 mixer.init()
-mixer.music.set_volume(0.5)
+mixer.music.set_volume(1)
 mixer.music.load("Music/Sorry About That.mp3")
 mixer.music.play()
 
@@ -44,7 +44,7 @@ pause_but = pygame.Rect(100, 50, 100, 70)
 button_enabled = True
 button_enabled2 = True
 button_enabled3 = True
-button_Exit = True
+button_exit_enabled = True
 new_press = True
 
 class Button:
@@ -57,7 +57,7 @@ class Button:
      
      def draw(self):
           button_text = font.render(self.text, True, "black")
-          button_rect = pygame.Rect((self.x_pos, self.y_pos), (80, 25))
+          button_rect = pygame.Rect((self.x_pos, self.y_pos), (150, 25))
           if self.enabled:
                 if self.check_click():
                     pygame.draw.rect(screen, 'dark grey', button_rect, 0, 15)
@@ -84,10 +84,10 @@ while running:
     screen.fill("pink")
     timer.tick(fps)
 
-    my_button = Button("Pause", 150, 650, button_enabled)
-    my_button2 = Button("Play", 300, 650, button_enabled2)
-    my_button3 = Button("Skip", 450, 650, button_enabled3)
-    
+    my_button = Button("Pause", 10, 10, button_enabled)
+    my_button2 = Button("Play", 10, 40, button_enabled2)
+    my_button3 = Button("Skip", 10, 70, button_enabled3)
+    my_button4 = Button("EXIT", 10, 100, button_exit_enabled)
 
     if pygame.mouse.get_pressed()[0] and new_press:
          new_press = False
@@ -102,6 +102,8 @@ while running:
          elif my_button3.check_click():
               next_song()
               print("Skipping song")
+         elif my_button4.check_click():
+          pygame.quit()
               
         
     if not pygame.mouse.get_pressed()[0] and not new_press:
