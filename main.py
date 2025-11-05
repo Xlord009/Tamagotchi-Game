@@ -14,7 +14,7 @@ timer = pygame.time.Clock()
 
 #Music
 mixer.init()
-mixer.music.set_volume(1)
+mixer.music.set_volume(0.5)
 mixer.music.load("Music/Sorry About That.mp3")
 mixer.music.play()
 
@@ -44,6 +44,7 @@ pause_but = pygame.Rect(100, 50, 100, 70)
 button_enabled = True
 button_enabled2 = True
 button_enabled3 = True
+button_Exit = True
 new_press = True
 
 class Button:
@@ -86,6 +87,7 @@ while running:
     my_button = Button("Pause", 150, 650, button_enabled)
     my_button2 = Button("Play", 300, 650, button_enabled2)
     my_button3 = Button("Skip", 450, 650, button_enabled3)
+    
 
     if pygame.mouse.get_pressed()[0] and new_press:
          new_press = False
