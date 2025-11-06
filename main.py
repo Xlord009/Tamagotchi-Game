@@ -20,7 +20,8 @@ mixer.music.play()
 
 playlist = [
      "Music/Sorry About That.mp3",
-     "Music/Never see me again Kanye West.mp3"
+     "Music/Never see me again Kanye West.mp3",
+     "music/This Is New.mp3"
 ]
 
 current = 0
@@ -30,6 +31,13 @@ mixer.music.play()
 def next_song():
     global current
     current = (current + 1) % len(playlist)
+    mixer.music.load(playlist[current])
+    mixer.music.play()
+    print("Playing:", playlist[current])
+
+def previous_song():
+    global current
+    current = (current - 1) % len(playlist)
     mixer.music.load(playlist[current])
     mixer.music.play()
     print("Playing:", playlist[current])
@@ -45,6 +53,7 @@ button_enabled = True
 button_enabled2 = True
 button_enabled3 = True
 button_exit_enabled = True
+button_enabled5 = True
 new_press = True
 
 class Button:
@@ -87,7 +96,9 @@ while running:
     my_button = Button("Pause", 10, 10, button_enabled)
     my_button2 = Button("Play", 10, 40, button_enabled2)
     my_button3 = Button("Skip", 10, 70, button_enabled3)
-    my_button4 = Button("EXIT", 10, 100, button_exit_enabled)
+    my_button4 = Button("Previous", 10, 100, button_enabled5)
+    my_button5 = Button("EXIT", 10, 130, button_exit_enabled)
+    
 
     if pygame.mouse.get_pressed()[0] and new_press:
          new_press = False
@@ -102,8 +113,13 @@ while running:
          elif my_button3.check_click():
               next_song()
               print("Skipping song")
+
          elif my_button4.check_click():
-          pygame.quit()
+              previous_song()
+              print("Playing previous song")
+
+         elif my_button5.check_click():
+              pygame.quit()
               
         
     if not pygame.mouse.get_pressed()[0] and not new_press:
