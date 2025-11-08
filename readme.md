@@ -14,3 +14,7 @@ Steps:
         pip install pygame
 3. Done! 
 
+Made by: 
+- Adam Sbai (Code and team management)
+- Pierre Bébin (Graphic designer and music producer)
+

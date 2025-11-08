@@ -12,6 +12,17 @@ pygame.display.set_caption("Tamagotchi")
 fps = 60
 timer = pygame.time.Clock()
 
+
+class Tama:
+        def __init__(self):
+                self.hunger = 100
+                self.emotions = 100
+                self.alive = True
+
+my_tama = Tama()
+
+death_started = None
+
 #Music
 mixer.init()
 mixer.music.set_volume(1)
@@ -45,6 +56,7 @@ def previous_song():
 
 
 
+
 font = pygame.font.Font(None, 36)
 
 button_rect = pygame.Rect(200, 200, 100, 50)
@@ -54,6 +66,10 @@ button_enabled2 = True
 button_enabled3 = True
 button_exit_enabled = True
 button_enabled5 = True
+button_enabled_feed = True
+button_enabled_pat = True
+button_enabled_kill = True
+
 new_press = True
 
 class Button:
@@ -98,6 +114,10 @@ while running:
     my_button3 = Button("Skip", 10, 70, button_enabled3)
     my_button4 = Button("Previous", 10, 100, button_enabled5)
     my_button5 = Button("EXIT", 10, 130, button_exit_enabled)
+    my_button6 = Button("Feed", 270, 600, button_enabled_feed)
+    my_button7 = Button("Pat", 90, 600, button_enabled_feed)
+    my_button8 = Button("Kill", 450, 600, button_enabled_feed)
+
     
 
     if pygame.mouse.get_pressed()[0] and new_press:
@@ -118,6 +138,23 @@ while running:
               previous_song()
               print("Playing previous song")
 
+         elif my_button6.check_click():
+              my_tama.hunger + 5
+              print(f"You feeded your tamagotchi (o･ω･o) hunger: {my_tama.hunger}%") 
+         
+         elif my_button7.check_click():
+              my_tama.emotions + 5
+              print(f"You patted your Tamagotchi (⌒ω⌒) emotion: {my_tama.emotions}%") 
+         
+         elif my_button8.check_click():
+              print(f"He died (｡•́︿•̀｡)")
+              mixer.music.unload()
+              mixer.music.load("music/Church Bell - Sound Effect.mp3")
+              mixer.music.play()
+              
+              death_started = pygame.time.get_ticks()
+
+         
          elif my_button5.check_click():
               pygame.quit()
               
@@ -125,6 +162,16 @@ while running:
     if not pygame.mouse.get_pressed()[0] and not new_press:
          new_press = True
     
+
+    if death_started is not None:
+         now = pygame.time.get_ticks()
+         if now - death_started >= 4700:
+              mixer.music.unload()
+              mixer.music.load(playlist[current])
+              mixer.music.play()
+              print("Wait he's back")
+
+              death_started = None
 
               
     for event in pygame.event.get():
@@ -153,9 +200,3 @@ pygame.quit()
 
 
 
-class Tama:
-        def __init__(self):
-                self.hunger = 100
-                self.emotions = 100
-                self.health = 100
-                self.alive = True
