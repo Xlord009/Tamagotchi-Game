@@ -3,6 +3,7 @@ import random
 import sys
 import pygame
 from pygame import mixer
+from pygame.locals import *
 
 
 pygame.init()
@@ -12,6 +13,7 @@ pygame.display.set_caption("Tamagotchi")
 fps = 60
 timer = pygame.time.Clock()
 
+cat_animation = 0
 
 class Tama:
         def __init__(self):
@@ -21,6 +23,11 @@ class Tama:
 
 my_tama = Tama()
 
+image_sprite = [
+     pygame.image.load("Art/neutral-cat.jpg"),
+     pygame.image.load("Art/dead cat.jpg")]
+     
+current_image = image_sprite[0]
 death_started = None
 
 #Music
@@ -151,7 +158,7 @@ while running:
               mixer.music.unload()
               mixer.music.load("music/Church Bell - Sound Effect.mp3")
               mixer.music.play()
-              
+              current_image = pygame.image.load("Art/dead cat.jpg")
               death_started = pygame.time.get_ticks()
 
          
@@ -170,6 +177,7 @@ while running:
               mixer.music.load(playlist[current])
               mixer.music.play()
               print("Wait he's back")
+              current_image = pygame.image.load("Art/neutral-cat.jpg")
 
               death_started = None
 
@@ -192,9 +200,19 @@ while running:
                 print("skipping song")
 
 
+    
+    if cat_animation >= len(image_sprite):
+         cat_animation = 0
 
+    image = image_sprite[cat_animation]
+
+    x = 180
+    y = 180
+
+    screen.blit(current_image, (x, y))
+
+    pygame.display.update()
     pygame.display.flip()
-
 
 pygame.quit()
 
