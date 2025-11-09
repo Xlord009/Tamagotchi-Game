@@ -8,12 +8,14 @@ from pygame.locals import *
 
 pygame.init()
 screen = pygame.display.set_mode((720, 720))
-pygame.display.set_caption("Tamagotchi")
+pygame.display.set_caption("Sunny Tamagotchi")
 
 fps = 60
 timer = pygame.time.Clock()
 
-cat_animation = 0
+sun_animation = 2
+
+
 
 class Tama:
         def __init__(self):
@@ -24,12 +26,16 @@ class Tama:
 my_tama = Tama()
 
 image_sprite = [
-     pygame.image.load("Art/neutral-cat.jpg"),
-     pygame.image.load("Art/dead cat.jpg")]
+    pygame.image.load("Art/doctor sun/neutral-sun.png").convert_alpha(),
+    pygame.image.load("Art/doctor sun/neutral-sun-2.png").convert_alpha(),
+]
      
+blinking_neutral = pygame.USEREVENT + 1
+pygame.time.set_timer(blinking_neutral, 3000)
 current_image = image_sprite[0]
 death_started = None
-
+emotions_started = None
+hunger_started = None
 #Music
 mixer.init()
 mixer.music.set_volume(1)
@@ -60,7 +66,8 @@ def previous_song():
     mixer.music.play()
     print("Playing:", playlist[current])
 
-
+SONG_END = pygame.USEREVENT + 2
+pygame.mixer.music.set_endevent(SONG_END)
 
 
 
@@ -146,30 +153,40 @@ while running:
               print("Playing previous song")
 
          elif my_button6.check_click():
-              my_tama.hunger + 5
-              print(f"You feeded your tamagotchi (o･ω･o) hunger: {my_tama.hunger}%") 
+              my_tama.hunger += 5
+              my_tama.hunger = min(my_tama.hunger, 100)
+              print(f"You feeded your tamagotchi (o･ω･o) hunger: {my_tama.hunger}%")
+              hunger_started = pygame.time.get_ticks()
+              current_image = pygame.image.load("Art/doctor sun/neutral-sun-2.png").convert_alpha()
+
+
          
          elif my_button7.check_click():
-              my_tama.emotions + 5
-              print(f"You patted your Tamagotchi (⌒ω⌒) emotion: {my_tama.emotions}%") 
+              my_tama.emotions += 5
+              my_tama.emotions = min(my_tama.emotions, 100)
+              print(f"You patted your Tamagotchi (⌒ω⌒) emotion: {my_tama.emotions}%")
+              emotions_started = pygame.time.get_ticks()
+              current_image = pygame.image.load("Art/doctor sun/neutral-sun-2.png").convert_alpha()
+
+
          
          elif my_button8.check_click():
               print(f"He died (｡•́︿•̀｡)")
               mixer.music.unload()
               mixer.music.load("music/Church Bell - Sound Effect.mp3")
               mixer.music.play()
-              current_image = pygame.image.load("Art/dead cat.jpg")
+              current_image = pygame.image.load("Art/doctor sun/sad-sun.png").convert_alpha()
               death_started = pygame.time.get_ticks()
 
          
          elif my_button5.check_click():
               pygame.quit()
+
               
         
     if not pygame.mouse.get_pressed()[0] and not new_press:
          new_press = True
     
-
     if death_started is not None:
          now = pygame.time.get_ticks()
          if now - death_started >= 4700:
@@ -177,42 +194,58 @@ while running:
               mixer.music.load(playlist[current])
               mixer.music.play()
               print("Wait he's back")
-              current_image = pygame.image.load("Art/neutral-cat.jpg")
-
+              current_image = image_sprite[0]
               death_started = None
+
+
+    if emotions_started is not None:
+     now = pygame.time.get_ticks()
+     if now - emotions_started >= 2000:
+        current_image = image_sprite[0]  
+        emotions_started = None
+
+    if hunger_started is not None:
+     now = pygame.time.get_ticks()
+     if now - hunger_started >= 2000:
+        current_image = image_sprite[0]  
+        hunger_started = None
+
+              
+
 
               
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+       if event.type == pygame.QUIT:
+        running = False
+       elif event.type == SONG_END:
+        next_song()
+       elif event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_p:
+            mixer.music.pause()
+        elif event.key == pygame.K_r:
+            mixer.music.unpause()
+        elif event.key == pygame.K_e:
+            mixer.music.stop()
             running = False
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_p:
-                mixer.music.pause()
-                print("Music was paused")
-            elif event.key == pygame.K_r:
-                mixer.music.unpause()
-                print("Music is playing")
-            elif event.key == pygame.K_e:
-                mixer.music.stop()
-                running = False
-            elif event.key == pygame.K_s:
-                next_song()
-                print("skipping song")
+        elif event.key == pygame.K_s:
+            next_song()
 
 
-    
-    if cat_animation >= len(image_sprite):
-         cat_animation = 0
 
-    image = image_sprite[cat_animation]
 
-    x = 180
-    y = 180
+
+
+    x = -300
+    y = -350
 
     screen.blit(current_image, (x, y))
 
+     
+
+
     pygame.display.update()
     pygame.display.flip()
+
 
 pygame.quit()
 
