@@ -22,8 +22,12 @@ class Tama:
                 self.hunger = 100
                 self.emotions = 100
                 self.alive = True
+                self.low_hunger_triggered = False
 
 my_tama = Tama()
+
+gentimer = 5 * 60 * 1000
+next_trigger = pygame.time.get_ticks() + gentimer
 
 image_sprite = [
     pygame.image.load("Art/doctor sun/neutral-sun.png").convert_alpha(),
@@ -210,7 +214,22 @@ while running:
         current_image = image_sprite[0]  
         hunger_started = None
 
-              
+    now1 = pygame.time.get_ticks()
+    if now1 >= next_trigger:
+        my_tama.hunger -= 5
+        print("hunger decreased:", my_tama.hunger)
+        next_trigger = now1 + gentimer
+
+    if my_tama.hunger <= 20 and not my_tama.low_hunger_triggered:
+        my_tama.emotions -= 10
+        print(f"Sunny is getting hungry!:", my_tama.hunger)
+        my_tama.low_hunger_triggered = True
+
+    if my_tama.hunger > 20:
+        my_tama.low_hunger_triggered = False
+
+
+    
 
 
               
