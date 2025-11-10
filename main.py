@@ -191,7 +191,7 @@ while running:
          now = pygame.time.get_ticks()
          if now - death_started >= 4700:
               mixer.music.unload()
-              mixer.music.load(playlist[current])
+              mixer.music.load(playlist[current - 1])
               mixer.music.play()
               print("Wait he's back")
               current_image = image_sprite[0]
