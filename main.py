@@ -29,10 +29,6 @@ my_tama = Tama()
 gentimer = 5 * 60 * 1000
 next_trigger = pygame.time.get_ticks() + gentimer
 
-emotion_drop_timer = 30 * 1000
-next_emotion_drop = pygame.time.get_ticks() + emotion_drop_timer
-
-
 image_sprite = [
     pygame.image.load("Art/doctor sun/neutral-sun.png").convert_alpha(),
     pygame.image.load("Art/doctor sun/neutral-sun-2.png").convert_alpha(),
@@ -131,7 +127,6 @@ while running:
     screen.fill("pink")
     timer.tick(fps)
 
-
     my_button = Button("Pause", 10, 10, button_enabled)
     my_button2 = Button("Play", 10, 40, button_enabled2)
     my_button3 = Button("Skip", 10, 70, button_enabled3)
@@ -141,76 +136,83 @@ while running:
     my_button7 = Button("Pat", 90, 600, button_enabled_feed)
     my_button8 = Button("Kill", 450, 600, button_enabled_feed)
 
+    
 
     if pygame.mouse.get_pressed()[0] and new_press:
-        new_press = False
+         new_press = False
+         if my_button.check_click():
+              mixer.music.pause()
+              print("Music was paused")
+         
+         elif my_button2.check_click():
+              mixer.music.unpause()
+              print("Music is playing")
 
-        if my_button.check_click():
-            mixer.music.pause()
-            print("Music was paused")
+         elif my_button3.check_click():
+              next_song()
+              print("Skipping song")
 
-        elif my_button2.check_click():
-            mixer.music.unpause()
-            print("Music is playing")
+         elif my_button4.check_click():
+              previous_song()
+              print("Playing previous song")
 
-        elif my_button3.check_click():
-            next_song()
-            print("Skipping song")
+         elif my_button6.check_click():
+              my_tama.hunger += 5
+              my_tama.hunger = min(my_tama.hunger, 100)
+              print(f"You feeded your tamagotchi (o･ω･o) hunger: {my_tama.hunger}%")
+              hunger_started = pygame.time.get_ticks()
+              current_image = pygame.image.load("Art/doctor sun/neutral-sun-2.png").convert_alpha()
 
-        elif my_button4.check_click():
-            previous_song()
-            print("Playing previous song")
 
-        elif my_button6.check_click():  # FEED
-            my_tama.hunger += 5
-            my_tama.hunger = min(my_tama.hunger, 100)
-            print(f"You feeded your tamagotchi (o･ω･o) hunger: {my_tama.hunger}%")
-            hunger_started = pygame.time.get_ticks()
-            current_image = pygame.image.load("Art/doctor sun/neutral-sun-2.png").convert_alpha()
+         
+         elif my_button7.check_click():
+              my_tama.emotions += 5
+              my_tama.emotions = min(my_tama.emotions, 100)
+              print(f"You patted your Tamagotchi (⌒ω⌒) emotion: {my_tama.emotions}%")
+              emotions_started = pygame.time.get_ticks()
+              current_image = pygame.image.load("Art/doctor sun/neutral-sun-2.png").convert_alpha()
 
-        elif my_button7.check_click():  # PAT
-            my_tama.emotions += 5
-            my_tama.emotions = min(my_tama.emotions, 100)
-            print(f"You patted your Tamagotchi (⌒ω⌒) emotion: {my_tama.emotions}%")
-            emotions_started = pygame.time.get_ticks()
-            current_image = pygame.image.load("Art/doctor sun/neutral-sun-2.png").convert_alpha()
 
-        elif my_button8.check_click():  # KILL
-            print("He died (｡•́︿•̀｡)")
-            mixer.music.unload()
-            mixer.music.load("music/Church Bell - Sound Effect.mp3")
-            mixer.music.play()
-            current_image = pygame.image.load("Art/doctor sun/sad-sun.png").convert_alpha()
-            death_started = pygame.time.get_ticks()
+         
+         elif my_button8.check_click():
+              print(f"He died (｡•́︿•̀｡)")
+              mixer.music.unload()
+              mixer.music.load("music/Church Bell - Sound Effect.mp3")
+              mixer.music.play()
+              current_image = pygame.image.load("Art/doctor sun/sad-sun.png").convert_alpha()
+              death_started = pygame.time.get_ticks()
 
-        elif my_button5.check_click():  # EXIT
-            pygame.quit()
-            sys.exit()
+         
+         elif my_button5.check_click():
+              pygame.quit()
 
+              
+        
     if not pygame.mouse.get_pressed()[0] and not new_press:
-        new_press = True
-
-
+         new_press = True
+    
     if death_started is not None:
-        now = pygame.time.get_ticks()
-        if now - death_started >= 4700:
-            mixer.music.unload()
-            mixer.music.load(playlist[current - 1])
-            mixer.music.play()
-            print("Wait he's back")
-            current_image = image_sprite[0]
-            death_started = None
+         now = pygame.time.get_ticks()
+         if now - death_started >= 4700:
+              mixer.music.unload()
+              mixer.music.load(playlist[current - 1])
+              mixer.music.play()
+              print("Wait he's back")
+              current_image = image_sprite[0]
+              death_started = None
 
 
-    now = pygame.time.get_ticks()
-    if emotions_started is not None and now - emotions_started >= 1700:
-        current_image = image_sprite[0]
+    if emotions_started is not None:
+     now = pygame.time.get_ticks()
+     if now - emotions_started >= 2000:
+        current_image = image_sprite[0]  
         emotions_started = None
 
-    if hunger_started is not None and now - hunger_started >= 1700:
-        current_image = image_sprite[0]
+    if hunger_started is not None:
+     now = pygame.time.get_ticks()
+     if now - hunger_started >= 2000:
+        current_image = image_sprite[0]  
         hunger_started = None
-
 
     now1 = pygame.time.get_ticks()
     if now1 >= next_trigger:
@@ -218,55 +220,53 @@ while running:
         print("hunger decreased:", my_tama.hunger)
         next_trigger = now1 + gentimer
 
-    if my_tama.hunger <= 20 and now1 >= next_emotion_drop:
+    if my_tama.hunger <= 20 and not my_tama.low_hunger_triggered:
         my_tama.emotions -= 10
-        print("emotions dropped because hunger is low:", my_tama.emotions)
-        next_emotion_drop = now1 + emotion_drop_timer
+        print(f"Sunny is getting hungry!:", my_tama.hunger)
+        my_tama.low_hunger_triggered = True
+
+    if my_tama.hunger > 20:
+        my_tama.low_hunger_triggered = False
 
 
-    if my_tama.hunger <= 20:
-        print("QUICK FEED HIM!")
-        current_image = pygame.image.load("Art/doctor sun/sad-sun-2.png").convert_alpha()
-
-    elif my_tama.hunger <= 40:
-        print("Your Tamagotchi is Hungry!")
-        current_image = pygame.image.load("Art/doctor sun/sad-sun.png").convert_alpha()
-
-    elif my_tama.hunger <= 60:
-        print("Your tamagotchi is starting to get hungry!")
-        current_image = pygame.image.load("Art/doctor sun/angry-sun.png").convert_alpha()
-
-    elif my_tama.hunger <= 80:
-        current_image = pygame.image.load("Art/doctor sun/neutral-sun.png").convert_alpha()
-
-    else:  # hunger > 80
-        current_image = pygame.image.load("Art/doctor sun/neutral-sun.png").convert_alpha()
+    
 
 
+              
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+       if event.type == pygame.QUIT:
+        running = False
+       elif event.type == SONG_END:
+        next_song()
+       elif event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_p:
+            mixer.music.pause()
+        elif event.key == pygame.K_r:
+            mixer.music.unpause()
+        elif event.key == pygame.K_e:
+            mixer.music.stop()
             running = False
-        elif event.type == SONG_END:
+        elif event.key == pygame.K_s:
             next_song()
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_p:
-                mixer.music.pause()
-            elif event.key == pygame.K_r:
-                mixer.music.unpause()
-            elif event.key == pygame.K_e:
-                mixer.music.stop()
-                running = False
-            elif event.key == pygame.K_s:
-                next_song()
+
+
+
+
 
 
     x = -300
     y = -350
+
     screen.blit(current_image, (x, y))
+
+     
+
 
     pygame.display.update()
     pygame.display.flip()
 
+
+pygame.quit()
 
 
 
