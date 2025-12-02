@@ -179,7 +179,7 @@ while running:
               mixer.music.unload()
               mixer.music.load("music/Church Bell - Sound Effect.mp3")
               mixer.music.play()
-              current_image = pygame.image.load("Art/doctor sun/sad-sun.png").convert_alpha()
+              current_image = pygame.image.load("Art/doctor sun/dead.jpg").convert_alpha()
               death_started = pygame.time.get_ticks()
 
          
