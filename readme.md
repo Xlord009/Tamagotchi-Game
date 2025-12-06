@@ -5,9 +5,11 @@ In order to run this game you must meet the minimal requierements:
 1. Have python 3.14 or higher
 2. Have installed PyGame
 
-if you didn't install pygame, here are the steps:
+if you didn't install python and pygame, here are the steps:
 
-Steps:
+Steps:(PYthon)
+
+Steps:(Pygame)
 1. Open Terminal
 2. Run this command
 

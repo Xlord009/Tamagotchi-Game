@@ -1,0 +1,3 @@
+([('main',
+   '/Users/adamsbai/Desktop/VS CODE/Python/Tamagotchi-Game/dist/main',
+   'EXECUTABLE')],)
